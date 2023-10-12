@@ -35,12 +35,18 @@ defmodule Schedule do
   defp interest, do: [8.0, 8.0, 5.0, 9.0, 7.0, 2.0, 8.0, 2.0, 7.0, 10.0]
 
   @impl true
-  def terminate?(population, generation) do
+  def terminate?(_population, generation) do
     generation == 1000
   end
 end
 
-soln = Genetic.run(Schedule, crossover_type: &Toolbox.Crossover.single_point/2)
+soln =
+  Genetic.run(Schedule,
+    crossover_type: &Toolbox.Crossover.single_point/2,
+    reinsertion_strategy: &Toolbox.Reinsertion.elitist(&1, &2, &3, 0.1),
+    selection_rate: 0.8,
+    mutation_rate: 0.1
+  )
 
 IO.write("\n")
 IO.inspect(soln.genes)
