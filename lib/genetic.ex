@@ -45,25 +45,26 @@ defmodule Genetic do
   end
 
   def crossover(population, opts \\ []) do
+    crossover_fn = Keyword.get(opts, :crossover_type, &Toolbox.Crossover.order_one/2)
+
     population
     |> Enum.reduce(
       [],
       fn {p1, p2}, acc ->
-        cx_point = :rand.uniform(length(p1.genes))
-
-        {{h1, t1}, {h2, t2}} = {Enum.split(p1.genes, cx_point), Enum.split(p2.genes, cx_point)}
-
-        {c1, c2} = {%Chromosome{p1 | genes: h1 ++ t2}, %Chromosome{p2 | genes: h2 ++ t1}}
+        {c1, c2} = apply(crossover_fn, [p1, p2])
         [c1, c2 | acc]
       end
     )
   end
 
   def mutation(population, opts \\ []) do
+    mutate_fn = Keyword.get(opts, :mutation_type, &Toolbox.Mutation.flip/1)
+    rate = Keyword.get(opts, :mutation_rate, 0.05)
+
     population
     |> Enum.map(fn chromosome ->
-      if :rand.uniform() < 0.05 do
-        %Chromosome{chromosome | genes: Enum.shuffle(chromosome.genes)}
+      if :rand.uniform() < rate do
+        apply(mutate_fn, [chromosome])
       else
         chromosome
       end
