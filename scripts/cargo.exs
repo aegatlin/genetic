@@ -16,9 +16,9 @@ defmodule Cargo do
 
     potential_profits =
       chromosome.genes
-    |> Enum.zip(profits)
-    |> Enum.map(fn {c, p} -> c * p end)
-    |> Enum.sum()
+      |> Enum.zip(profits)
+      |> Enum.map(fn {c, p} -> c * p end)
+      |> Enum.sum()
 
     over_limit? =
       chromosome.genes
@@ -35,7 +35,6 @@ defmodule Cargo do
   def terminate?(_population, generation) do
     # Enum.max_by(population, &Cargo.fitnesso_function/1).fitness == 53
     generation == 1000
-
   end
 end
 

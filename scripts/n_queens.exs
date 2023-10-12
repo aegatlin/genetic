@@ -32,9 +32,9 @@ defmodule NQueens do
         end
       end
 
-      # length of Enum.uniq is effectively the number of row clashes pre-subtracted
-      # so 8 - row-clashes - diag-clashes is what is returned here
-      length(Enum.uniq(chromosome.genes)) - Enum.sum(diag_clashes)
+    # length of Enum.uniq is effectively the number of row clashes pre-subtracted
+    # so 8 - row-clashes - diag-clashes is what is returned here
+    length(Enum.uniq(chromosome.genes)) - Enum.sum(diag_clashes)
   end
 
   @impl true

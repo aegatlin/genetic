@@ -6,9 +6,10 @@ defmodule Portfolio do
 
   @impl true
   def genotype do
-    genes = for _ <- 1..10 do
-      {:rand.uniform(10), :rand.uniform(10)}
-    end
+    genes =
+      for _ <- 1..10 do
+        {:rand.uniform(10), :rand.uniform(10)}
+      end
 
     %Chromosome{genes: genes, size: 10}
   end

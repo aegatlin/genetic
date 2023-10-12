@@ -1,6 +1,38 @@
 defmodule Toolbox.Crossover do
   alias Types.Chromosome
 
+  @doc """
+  Order one crossover, sometimes called "Davis order" crossover,
+  is a crossover strategy well suited for ordered lists or permutations.
+  It splices values from one parent, into the other parent to create the first
+  child, and then repeats the process for child two. The splices ideally are
+  different chunks of parents for each child, to prevent duplication issues.
+
+  ## Example
+
+  [5, 4, 0, 1, 3, 2, 6]
+  [6, 3, 2, 5, 0, 4, 0]
+
+  splicing 2..5 from parent one into parent two would result in the following
+  child.
+
+  [6, 3, 0, 1, 3, 2, 0]
+
+  splicing 1..3 from parent two into parent one would result in the following
+  child.
+
+  [5, 3, 2, 5, 3, 2, 6]
+
+  The random slice of `order_one/2` is not controllable. So we will just test
+  that the size is maintained.
+
+      iex> { c1, c2 } = Toolbox.Crossover.order_one(
+      ...>   %Types.Chromosome{ genes: [5, 4, 0, 1, 3, 2, 5], size: 7 },
+      ...>   %Types.Chromosome{ genes: [6, 3, 2, 5, 0, 4, 0], size: 7 }
+      ...> )
+      ...> { Enum.count(c1.genes), Enum.count(c2.genes) }
+      { 7, 7 }
+  """
   def order_one(p1, p2) do
     lim = Enum.count(p1.genes) - 1
 

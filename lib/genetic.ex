@@ -87,12 +87,13 @@ defmodule Genetic do
     IO.write("\rCurrent Best: #{best.fitness}")
 
     if problem.terminate?(population, generation) do
+      IO.write("\nTermination generation: #{generation}")
       best
     else
       {parents, leftover} = select(population, opts)
       children = crossover(parents, opts)
 
-      children ++ leftover
+      (children ++ leftover)
       |> mutation(opts)
       |> evolve(problem, generation + 1, opts)
     end

@@ -2,6 +2,8 @@ defmodule Toolbox.Mutation do
   alias Types.Chromosome
   use Bitwise
 
+  def flip(chromosome), do: flip(chromosome, 0.5)
+
   def flip(chromosome, p) do
     genes =
       chromosome.genes
