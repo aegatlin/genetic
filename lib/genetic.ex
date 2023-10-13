@@ -6,8 +6,9 @@ defmodule Genetic do
 
   def initialize(genotype, opts \\ []) do
     population_size = Keyword.get(opts, :population_size, 100)
-
-    for _ <- 1..population_size, do: genotype.()
+    population = for _ <- 1..population_size, do: genotype.()
+    Utilities.Genealogy.add_chromosomes(population)
+    population
   end
 
   def evaluate(population, fitness_function, opts \\ []) do
@@ -52,6 +53,8 @@ defmodule Genetic do
       [],
       fn {p1, p2}, acc ->
         {c1, c2} = apply(crossover_fn, [p1, p2])
+        Utilities.Genealogy.add_chromosome(p1, p2, c1)
+        Utilities.Genealogy.add_chromosome(p1, p2, c2)
         [c1, c2 | acc]
       end
     )
@@ -65,7 +68,11 @@ defmodule Genetic do
 
     population
     |> Enum.take_random(n)
-    |> Enum.map(&apply(mutate_fn, [&1]))
+    |> Enum.map(fn c ->
+      mutant = apply(mutate_fn, [c])
+      Utilities.Genealogy.add_chromosome(c, mutant)
+      mutant
+    end)
   end
 
   def run(problem, opts \\ []) do
@@ -108,7 +115,7 @@ defmodule Genetic do
     default_stats = [
       min_fitness: &Enum.min_by(&1, fn c -> c.fitness end).fitness,
       max_fitness: &Enum.max_by(&1, fn c -> c.fitness end).fitness,
-      mean_fitness: &Enum.sum(Enum.map(&1, fn c -> c.fitness end)) / Enum.count(&1)
+      mean_fitness: &(Enum.sum(Enum.map(&1, fn c -> c.fitness end)) / Enum.count(&1))
     ]
 
     stats = Keyword.get(opts, :statistics, default_stats)

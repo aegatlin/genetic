@@ -55,13 +55,16 @@ tiger =
 IO.write("\n")
 IO.inspect(tiger)
 
-{_, zero_gen_stats} = Utilities.Statistics.lookup(0)
-{_, fivehundred_gen_stats} = Utilities.Statistics.lookup(500)
-{_, thousandth_gen_stats} = Utilities.Statistics.lookup(1000)
+genealogy = Utilities.Genealogy.get_tree()
+IO.inspect(Graph.vertices(genealogy))
 
-IO.inspect(zero_gen_stats.average_tiger)
-IO.inspect(fivehundred_gen_stats.average_tiger)
-IO.inspect(thousandth_gen_stats.average_tiger)
+# {_, zero_gen_stats} = Utilities.Statistics.lookup(0)
+# {_, fivehundred_gen_stats} = Utilities.Statistics.lookup(500)
+# {_, thousandth_gen_stats} = Utilities.Statistics.lookup(1000)
+
+# IO.inspect(zero_gen_stats.average_tiger)
+# IO.inspect(fivehundred_gen_stats.average_tiger)
+# IO.inspect(thousandth_gen_stats.average_tiger)
 
 # IO.write("""
 # 0th: #{zero_gen_stats.average_tiger}
