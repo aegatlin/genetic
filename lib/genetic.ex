@@ -45,7 +45,7 @@ defmodule Genetic do
   end
 
   def crossover(population, opts \\ []) do
-    crossover_fn = Keyword.get(opts, :crossover_type, &Toolbox.Crossover.order_one/2)
+    crossover_fn = Keyword.get(opts, :crossover_type, &Toolbox.Crossover.single_point/2)
 
     population
     |> Enum.reduce(
@@ -78,6 +78,8 @@ defmodule Genetic do
   def evolve(population, problem, generation, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/1, opts)
 
+    statistics(population, generation, opts)
+
     # `evaluate` returns a sorted population, fittest first
     best = hd(population)
 
@@ -100,6 +102,27 @@ defmodule Genetic do
 
       evolve(new_population, problem, generation + 1, opts)
     end
+  end
+
+  def statistics(population, generation, opts) do
+    default_stats = [
+      min_fitness: &Enum.min_by(&1, fn c -> c.fitness end).fitness,
+      max_fitness: &Enum.max_by(&1, fn c -> c.fitness end).fitness,
+      mean_fitness: &Enum.sum(Enum.map(&1, fn c -> c.fitness end)) / Enum.count(&1)
+    ]
+
+    stats = Keyword.get(opts, :statistics, default_stats)
+
+    stats_map =
+      stats
+      |> Enum.reduce(
+        %{},
+        fn {key, func}, acc ->
+          Map.put(acc, key, func.(population))
+        end
+      )
+
+    Utilities.Statistics.insert(generation, stats_map)
   end
 
   def reinsertion(parents, offspring, leftover, opts) do
