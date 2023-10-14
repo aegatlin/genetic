@@ -25,6 +25,7 @@ defmodule Genetic.MixProject do
       # TODO: update to 0.16.0, it's modern version
       # this version is used in the book
       {:libgraph, "~> 0.13.0"},
+      {:gnuplot, "~> 1.19"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end

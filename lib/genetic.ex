@@ -26,7 +26,9 @@ defmodule Genetic do
     select_rate = Keyword.get(opts, :selection_rate, 0.8)
 
     n = round(length(population) * select_rate)
-    n = if rem(n, 2) == 0, do: n, else: n + 1
+    # I changed `n+1` to `n-1` in ch 10 because a population
+    # of 5 was asked for and this code would "take 6"
+    n = if rem(n, 2) == 0, do: n, else: n - 1
 
     parents =
       select_fn

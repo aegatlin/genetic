@@ -23,7 +23,7 @@ defmodule TigerSimulation do
 
   @impl true
   def terminate?(population, generation) do
-    generation == 1000
+    generation == 150
   end
 
   def average_tiger(population) do
@@ -46,17 +46,34 @@ end
 
 tiger =
   Genetic.run(TigerSimulation,
-    population_size: 20,
+    # this was 5 in ch10 of the book, but has to be 50 for
+    # my algorithm to show similar gnuplots to the book
+    population_size: 50,
     selection_rate: 0.9,
-    mutation_rate: 0.1,
-    statistics: %{average_tiger: &TigerSimulation.average_tiger/1}
+    mutation_rate: 0.1#,
+    # statistics: %{average_tiger: &TigerSimulation.average_tiger/1}
   )
 
-IO.write("\n")
-IO.inspect(tiger)
+stats =
+  :ets.tab2list(:statistics)
+  |> Enum.map(fn {gen, stats} -> [gen, stats.mean_fitness] end)
 
-genealogy = Utilities.Genealogy.get_tree()
-IO.inspect(Graph.vertices(genealogy))
+{:ok, cmd} =
+  Gnuplot.plot([
+    [:set, :title, "mean fitness versus generation"],
+    [:plot, "-", :with, :points]
+  ], [stats])
+
+# IO.write("\n")
+# IO.inspect(tiger)
+#
+# genealogy = Utilities.Genealogy.get_tree()
+# # IO.inspect(Graph.vertices(genealogy))
+# {:ok, dot} = Graph.Serializers.DOT.serialize(genealogy)
+# {:ok, dotfile} = File.open("tiger_simulation.dot", [:write])
+# :ok = IO.binwrite(dotfile, dot)
+# :ok = File.close(dotfile)
+
 
 # {_, zero_gen_stats} = Utilities.Statistics.lookup(0)
 # {_, fivehundred_gen_stats} = Utilities.Statistics.lookup(500)
