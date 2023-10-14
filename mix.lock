@@ -1,4 +1,5 @@
 %{
+  "alex": {:hex, :alex, "0.3.2", "b6fa1d744783707e1ff068ecdef2eb993f9b05a2ebe9c97ba67b05902c0aaa9c", [:mix], [], "hexpm", "9d40610d06857f5a321923f28c44ca08575ad64594cbbfa4352eb115e5c0566e"},
   "earmark_parser": {:hex, :earmark_parser, "1.4.37", "2ad73550e27c8946648b06905a57e4d454e4d7229c2dafa72a0348c99d8be5f7", [:mix], [], "hexpm", "6b19783f2802f039806f375610faa22da130b8edc21209d0bff47918bb48360e"},
   "ex_doc": {:hex, :ex_doc, "0.30.6", "5f8b54854b240a2b55c9734c4b1d0dd7bdd41f71a095d42a70445c03cf05a281", [:mix], [{:earmark_parser, "~> 1.4.31", [hex: :earmark_parser, repo: "hexpm", optional: false]}, {:makeup_elixir, "~> 0.14", [hex: :makeup_elixir, repo: "hexpm", optional: false]}, {:makeup_erlang, "~> 0.1", [hex: :makeup_erlang, repo: "hexpm", optional: false]}], "hexpm", "bd48f2ddacf4e482c727f9293d9498e0881597eae6ddc3d9562bd7923375109f"},
   "gnuplot": {:hex, :gnuplot, "1.22.270", "541da1d4be2acbcb2a53105a7c2f31d91127811858b522c1a2290ed5844b9624", [:mix], [{:ex_doc, "~> 0.28", [hex: :ex_doc, repo: "hexpm", optional: false]}], "hexpm", "2870982804ac79a93eebf31c07a507a1825bc23c782907da48d653cf970a4d41"},
