@@ -67,6 +67,10 @@ defmodule Toolbox.Crossover do
      }}
   end
 
+  def single_point(c1 = %Chromosome{genes: []}, c2 = %Chromosome{genes: []}) do
+    {c1, c2}
+  end
+
   def single_point(p1, p2) do
     cx_point = :rand.uniform(p1.size)
     {p1_head, p1_tail} = Enum.split(p1.genes, cx_point)

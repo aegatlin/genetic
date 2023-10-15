@@ -7,7 +7,7 @@ defmodule Genetic.MixProject do
       version: "0.1.0",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
+      deps: deps()
       # ch 11 using nifs to optimize
       # compilers: [:genetic] ++ Mix.compilers,
     ]
@@ -28,9 +28,11 @@ defmodule Genetic.MixProject do
       # this version is used in the book
       {:libgraph, "~> 0.13.0"},
       {:gnuplot, "~> 1.19"},
-      {:alex, "~> 0.3.2"},
+      # commented out because it doesn't work
+      # {:alex, "~> 0.3.2"},
       {:benchee, "~> 1.0.1"},
-      {:exprof, "~> 0.2.0"}
+      {:exprof, "~> 0.2.0"},
+      {:stream_data, "~> 0.5", only: :test}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end
