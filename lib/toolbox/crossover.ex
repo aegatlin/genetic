@@ -33,6 +33,7 @@ defmodule Toolbox.Crossover do
       ...> { Enum.count(c1.genes), Enum.count(c2.genes) }
       { 7, 7 }
   """
+  @spec order_one(Chromosome.t(), Chromosome.t()) :: {Chromosome.t(), Chromosome.t()}
   def order_one(p1, p2) do
     lim = Enum.count(p1.genes) - 1
 
@@ -67,6 +68,7 @@ defmodule Toolbox.Crossover do
      }}
   end
 
+  @spec single_point(Chromosome.t(), Chromosome.t()) :: {Chromosome.t(), Chromosome.t()}
   def single_point(c1 = %Chromosome{genes: []}, c2 = %Chromosome{genes: []}) do
     {c1, c2}
   end
@@ -80,6 +82,7 @@ defmodule Toolbox.Crossover do
     {%Chromosome{genes: c1, size: length(c1)}, %Chromosome{genes: c2, size: length(c2)}}
   end
 
+  @spec uniform(Chromosome.t(), Chromosome.t(), float()) :: {Chromosome.t(), Chromosome.t()}
   def uniform(p1, p2, rate) do
     {c1, c2} =
       p1.genes
@@ -96,6 +99,8 @@ defmodule Toolbox.Crossover do
     {%Chromosome{genes: c1, size: length(c1)}, %Chromosome{genes: c2, size: length(c2)}}
   end
 
+  @spec whole_arithmetic(Chromosome.t(), Chromosome.t(), float()) ::
+          {Chromosome.t(), Chromosome.t()}
   def whole_arithmetic(p1, p2, alpha) do
     {c1, c2} =
       p1.genes
