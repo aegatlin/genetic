@@ -55,4 +55,3 @@ soln = Genetic.run(Tetris, population_size: 10)
 
 IO.write("\n")
 IO.inspect("Best is #{soln}\n")
-
