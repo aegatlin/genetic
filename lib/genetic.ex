@@ -4,14 +4,30 @@ defmodule Genetic do
   """
   alias Types.Chromosome
 
+  # ch 11 using NIFs to optimize
+  # @on_load :load_nif
+  #
+  # def load_nif do
+  #   :erlang.load_nif(~c"./genetic", 0)
+  # end
+  #
+  # def xor96, do: raise "NIF xor96/0 not implemented."
+
   def initialize(genotype, opts \\ []) do
     population_size = Keyword.get(opts, :population_size, 100)
     population = for _ <- 1..population_size, do: genotype.()
+    # ch 11 using Tasks to optimize
+    # population = for _ <- 1..population_size, do: Chromosome.start_link(genes: genotype.())
     Utilities.Genealogy.add_chromosomes(population)
     population
   end
 
   def evaluate(population, fitness_function, opts \\ []) do
+    # ch 11 using tasks to optimize
+    # population
+    # |> Enum.map(&Task.async(fn -> Chromosome.eval(&1, fitness_function) end))
+    # |> Enum.sort_by(fn c -> Chromosome.get_fitness(c) end, &>=/2)
+
     population
     |> Enum.map(fn chromosome ->
       fitness = fitness_function.(chromosome)
@@ -92,11 +108,12 @@ defmodule Genetic do
     # `evaluate` returns a sorted population, fittest first
     best = hd(population)
 
-    fit_str =
-      best.fitness
-      |> :erlang.float_to_binary(decimals: 4)
-
-    IO.write("\rCurrent Best: #{fit_str}\tGeneration: #{generation}")
+    ## ch11 Benchee breaks here, so commented out
+    # fit_str =
+    #   best.fitness
+    #   |> :erlang.float_to_binary(decimals: 4)
+    #
+    # IO.write("\rCurrent Best: #{fit_str}\tGeneration: #{generation}")
 
     if problem.terminate?(population, generation) do
       IO.write("\nTermination generation: #{generation}")
@@ -138,5 +155,17 @@ defmodule Genetic do
     strategy = Keyword.get(opts, :reinsertion_strategy, &Toolbox.Reinsertion.pure/3)
 
     apply(strategy, [parents, offspring, leftover])
+  end
+
+  @doc """
+  `pmap` creates a parellel map function by attaching
+  every element in a collection to a process. The processes
+  then all execute in parellel.
+
+  """
+  def pmap(collection, func) do
+    collection
+    |> Enum.map(&Task.async(func.(&1)))
+    |> Enum.map(&Task.await(&1))
   end
 end

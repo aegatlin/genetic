@@ -7,7 +7,9 @@ defmodule Genetic.MixProject do
       version: "0.1.0",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      # ch 11 using nifs to optimize
+      # compilers: [:genetic] ++ Mix.compilers,
     ]
   end
 
@@ -26,8 +28,26 @@ defmodule Genetic.MixProject do
       # this version is used in the book
       {:libgraph, "~> 0.13.0"},
       {:gnuplot, "~> 1.19"},
-      {:alex, "~> 0.3.2"}
+      {:alex, "~> 0.3.2"},
+      {:benchee, "~> 1.0.1"},
+      {:exprof, "~> 0.2.0"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end
 end
+
+# ch 11 using NIFs to optimize
+# defmodule Mix.Tasks.Compile.Genetic do
+#   use Mix.Task.Compiler
+#
+#   def run(_args) do
+#     {result, _errcode} =
+#       System.cmd(
+#         "gcc",
+#         ["-fpic", "-shared", "-o", "genetic.so", "src/genetic.c"],
+#         stderr_to_stdout: true
+#       )
+#
+#     IO.puts(result)
+#   end
+# end
